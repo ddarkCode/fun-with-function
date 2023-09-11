@@ -1,0 +1,11 @@
+{
+  "name": "javascript",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ddarkCode/fun-with-function.git",
+  "author": "Nnamani Ugochukwu Frederick <royal.ugoh@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon index.js"
+  }
+}
