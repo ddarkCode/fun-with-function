@@ -45,4 +45,62 @@ const curry = (binary, first ) => {
 let inc = addf(1);
 inc = liftf(add)(1)
 inc = curry(add, 1)
-log(inc(5))
+// log(inc(5))
+
+//Write a function twice that takes a binary function and returns a unary function that pass it argument to the binary function twice
+
+const twice = (binary) => {
+    return x => {
+        return binary(x, x);
+    }
+}
+let doubl = twice(add)
+// log(doubl(11))
+let square = twice(mul)
+// log(square(11))
+
+//Write reverse, a funnction that reverses the arguments of a binary function
+
+const reverse = binary => {
+    return (first, second) => binary(second, first);
+}
+let bus = reverse(sub);
+// log(bus(3, 2));
+
+//Write a function  composeu that takes two unary functions and returns a unary function that calls them both
+// composeu(doubl, square)(5) === 100
+const composeu = (func1, func2) => {
+    return x => func2(func1(x));
+}
+
+// log(composeu(doubl, square)(5))
+
+//Write a function composeb that takes two binary functions and returns a function that calls them both
+
+function composeb(binary1, binary2) {
+    return (first, second, third) => {
+        return binary2(binary1(first, second), third)
+    }
+}
+// log(composeb(add, mul)(2,3,7 ))
+
+//Write a limit function that allows a binary function to be called a limited number of times
+
+const limit = (binary, x) => {
+   return function(first, second) {
+    while (x > 0) {
+        x -= 1
+        return binary(first, second);
+    }
+    return undefined;
+   }
+}
+
+let add_ltd = limit(add, 4);
+
+log(add_ltd(3, 4))
+log(add_ltd(3, 4))
+log(add_ltd(3, 4))
+log(add_ltd(3, 4))
+log(add_ltd(3, 4))
+log(add_ltd(3, 4))
