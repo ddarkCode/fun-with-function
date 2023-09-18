@@ -98,9 +98,156 @@ const limit = (binary, x) => {
 
 let add_ltd = limit(add, 4);
 
-log(add_ltd(3, 4))
-log(add_ltd(3, 4))
-log(add_ltd(3, 4))
-log(add_ltd(3, 4))
-log(add_ltd(3, 4))
-log(add_ltd(3, 4))
+// log(add_ltd(3, 4))
+// log(add_ltd(3, 4))
+
+//Write a from function that produces a generator that will produce a series of values
+function from(num) {
+    return () => {
+        const temp = num;
+        num += 1;
+        return temp;
+    };
+}
+
+// const index = from(0);
+// log(index())
+// log(index())
+// log(index())
+// log(index())
+
+
+//Write a to function that takes a generator and an end value and returns
+//a generator that will produce numbers up to that limit
+
+function to(gen, end) {
+    return () => {
+        const next = gen();
+     
+        if (next < end) {
+            return next;
+        }
+        return undefined;
+    }
+}
+
+// let index = to(from(1), 3);
+
+// log(index())
+// log(index())
+// log(index())
+// log(index())
+
+//Write a fromTo function that returns a generator that produces values in a range
+function fromTo(start, end) {
+    return to(from(start), end);
+}
+
+// const index = fromTo(0, 3);
+// log(index())
+// log(index())
+// log(index())
+// log(index())
+
+//Write an element function that takes an array and a generator and returns a
+//generator that will produce values from that array, Make the gen optional
+
+function element(array, gen) {
+    if (gen === undefined) {
+        gen = from(0);
+    }
+    return () => {
+        const index = gen();
+
+        if (index !== undefined) {
+            return array[index];
+        }  
+    }
+}
+
+const elem = element(['a', 'b', 'c', 'd']);
+
+// log(elem())
+// log(elem())
+// log(elem())
+// log(elem())
+// log(elem())
+// log(elem())
+
+//Write a collect function that takes a generator and an array and returns a function
+//that collects it values in an array.
+const array = [];
+function collect(gen, arr)  {
+   return () => {
+    const value = gen();
+    if (value !== undefined) {
+        arr.push(value);
+        return value;
+    }
+    return undefined;
+   }
+}
+
+const col = collect(fromTo(0, 2), array);
+// log(col())
+// log(col())
+// log(col())
+// log(array)
+
+//Write a filter function that takes a generator and a predicate and produces a generator that 
+//produces values approved by the predicate
+
+function filter(gen, predicate) {
+    return () => {
+        let value = gen();
+       while(value !== undefined) {
+        if (predicate(value)) {
+            return value;
+        }
+        value = gen()
+       }
+       return undefined;
+    }
+}
+
+const fil = filter(fromTo(0, 10), num => num % 3 === 0);
+log(fil())
+// log(fil())
+// log(fil())
+// log(fil())
+
+
+//Write a concat function that takes two generators and produces a generator that returns their values
+
+function concat(gen1, gen2) {
+    return () => {
+        let value = gen1();
+       if (value !== undefined) {
+        return value;
+       }
+       if (value === undefined) {
+        return gen2()
+       }
+  }
+}
+//Solution to problem
+
+function concat(gen1, gen2) {
+    let gen = gen1;
+    return () => {
+        let value = gen();
+        if (value !== undefined) {
+            return value;
+        }
+        gen = gen2;
+        return gen()
+    }
+}
+
+const con = concat(fromTo(0,3), fromTo(0, 2));
+log(con())
+log(con())
+log(con())
+log(con())
+log(con())
+log(con())
